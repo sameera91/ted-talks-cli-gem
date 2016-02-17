@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require './lib/ted_talks'
+
+TedTalks::CLI.new.call
