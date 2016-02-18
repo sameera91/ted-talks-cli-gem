@@ -2,7 +2,7 @@
 class TedTalks::CLI
 
 	def call
-		puts "Today's TED ideas worth spreading."
+		puts "Today's TED ideas worth spreading. Check out the top 10 talks today!"
 		puts " "
 		list_categories
 		menu
@@ -18,7 +18,8 @@ class TedTalks::CLI
 	end
 
 	def list_categories
-		puts "Here are 7 different categories. Enter the number of the category you'd like to see more videos about or enter search to search for videos."
+		puts "Here are 7 different categories. Enter the number or name of the category you'd like to see more videos about."
+		puts " "
 		puts "1. Top Talks"
 		puts "2. Technology"
 		puts "3. Entertainment"
@@ -26,35 +27,38 @@ class TedTalks::CLI
 		puts "5. Business"
 		puts "6. Science"
 		puts "7. Global Issues"
+    	puts " "
+    	puts "Or enter search if you would like to search for videos."
 
 		input = gets.strip.downcase
 
-		if input == "top talks" || input == "1"
+		categories_hash = {
+		 "top talks" => "1", 
+		 "technology" => "2", 
+		 "entertainment" => "3", 
+		 "design" => "4",
+		 "business" => "5",
+		 "science" => "6",
+		 "global issues" => "7"
+		}
+
+		if input.to_i == 1
 			list_talks
-		elsif input == "technology" || input == "2"
-			url = "http://www.ted.com/talks?topics%5B%5D=technology&sort=newest"
-			list_talks(url)
-		elsif input == "entertainment" || input == "3"
-			url = 'http://www.ted.com/talks?topics%5B%5D=entertainment&sort=newest'
-			list_talks(url)
-		elsif input == "design" || input == "4"
-			url = "http://www.ted.com/talks?topics%5B%5D=design&sort=newest"
-			list_talks(url)
-		elsif input == "business" || input == "5"
-			url = "http://www.ted.com/talks?topics%5B%5D=business&sort=newest"
-			list_talks(url)
-		elsif input == "science" || input == "6"
-			url = "http://www.ted.com/talks?topics%5B%5D=science&sort=newest"
-			list_talks(url)
-		elsif input == "global issues" || input == "7"
-			url = "http://www.ted.com/talks?topics%5B%5D=global+issues&sort=newest"
-			list_talks(url)
+		elsif input.to_i > 1 && input.to_i <= 7
+			url_value = categories_hash.key(input)
+			url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+		elsif categories_hash.key?(input)
+			url_value = input
+			url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
 		elsif input == "search"
 			puts "Enter your search term."
-			search = gets.strip.downcase
-			url = "http://www.ted.com/talks?q=#{search}&sort=newest"
-			list_talks(url)
+			url_value = gets.strip.downcase
+			url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
+		else
+			puts "Invalid option. Please enter a name or number of a category. "
 		end
+
+		list_talks(url)
 
 	end
 
@@ -62,16 +66,15 @@ class TedTalks::CLI
 		input = nil
 		while input != "exit"
 			puts " "
-			puts "Enter the number of the talk you'd like to learn more about, type list to see the articles again, or type categories to see the categories." 
-			puts "Type exit to quit the program."
+			puts "Enter the number of the talk you'd like to learn more about or press list to see the talks again."
+
 			input = gets.strip.downcase
 
 			if input.to_i > 0
 				the_talk = @talks[input.to_i - 1]
 
 				doc = Nokogiri::HTML(open(the_talk.url))
-				#binding.pry
-				#video content description from the second page
+		
 				display_talk_info(doc)
 			elsif input == "list"
 				list_talks
