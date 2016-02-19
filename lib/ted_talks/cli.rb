@@ -42,28 +42,28 @@ class TedTalks::CLI
 		 "global issues" => "7"
 		}
 
-		if input.to_i == 1
-			list_talks
-		elsif input.to_i > 1 && input.to_i <= 7
-			url_value = categories_hash.key(input)
-			url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
-		elsif categories_hash.key?(input)
-			url_value = input
-			url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
-		elsif input == "search"
-			puts "Enter your search term."
-			url_value = gets.strip.downcase
-			url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
-		else
-			puts "Invalid option. Please enter a name or number of a category. "
-		end
+			if input.to_i == 1
+				list_talks
+			elsif input.to_i > 1 && input.to_i <= 7
+				url_value = categories_hash.key(input)
+				url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+			elsif categories_hash.key?(input)
+				url_value = input
+				url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+			elsif input == "search"
+				puts "Enter your search term."
+				url_value = gets.strip.downcase
+				url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
+			elsif input == "exit"
+				exit
+			end
 
-		list_talks(url)
-
+		  list_talks(url)
 	end
 
 	def menu
 		input = nil
+
 		while input != "exit"
 			puts " "
 			puts "Enter the number of the talk you'd like to learn more about or press list to see the talks again."
@@ -72,9 +72,7 @@ class TedTalks::CLI
 
 			if input.to_i > 0
 				the_talk = @talks[input.to_i - 1]
-
 				doc = Nokogiri::HTML(open(the_talk.url))
-		
 				display_talk_info(doc)
 			elsif input == "list"
 				list_talks

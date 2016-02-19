@@ -1,6 +1,6 @@
 # TedTalks
 
-TODO: Write a gem description
+Welcome! This gem displays the information of the top 10 TED talks in one of several different categories, or lets you search for a talk of your choosing.
 
 ## Installation
 
