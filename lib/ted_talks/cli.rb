@@ -11,10 +11,12 @@ class TedTalks::CLI
 
 	def list_talks(url='http://www.ted.com/talks')
 		@talks = TedTalks::Talk.top_talks(url)
+
 		@talks.each.with_index do |talk, i|
 			puts "#{i+1}. #{talk.title} - #{talk.author} - Posted #{talk.date} - Rated #{talk.rating}"
 			puts " "
 		end
+
 	end
 
 	def list_categories
@@ -42,23 +44,23 @@ class TedTalks::CLI
 		 "global issues" => "7"
 		}
 
-			if input.to_i == 1
-				list_talks
-			elsif input.to_i > 1 && input.to_i <= 7
-				url_value = categories_hash.key(input)
-				url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
-			elsif categories_hash.key?(input)
-				url_value = input
-				url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
-			elsif input == "search"
-				puts "Enter your search term."
-				url_value = gets.strip.downcase
-				url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
-			elsif input == "exit"
-				exit
-			end
+		if input.to_i == 1
+			list_talks
+		elsif input.to_i > 1 && input.to_i <= 7
+			url_value = categories_hash.key(input)
+			url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+		elsif categories_hash.key?(input)
+			url_value = input
+			url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+		elsif input == "search"
+			puts "Enter your search term."
+			url_value = gets.strip.downcase
+			url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
+		elsif input == "exit"
+			exit
+		end
 
-		  list_talks(url)
+		list_talks(url)
 	end
 
 	def menu
@@ -66,36 +68,42 @@ class TedTalks::CLI
 
 		while input != "exit"
 			puts " "
-			puts "Enter the number of the talk you'd like to learn more about or press list to see the talks again."
+			puts "Enter the number of the talk you'd like to learn more about."
+			puts "Enter talks to see the talks again."
+			puts "Enter categories to see the categories again."
+			puts "Enter exit to end the program."
 
 			input = gets.strip.downcase
 
 			if input.to_i > 0
 				the_talk = @talks[input.to_i - 1]
-				doc = Nokogiri::HTML(open(the_talk.url))
-				display_talk_info(doc)
-			elsif input == "list"
+				@talk_info = TedTalks::Talk.talk_info(the_talk.url)
+				display_talk_info(@talk_info)
+			elsif input == "talks"
 				list_talks
 			elsif input == "categories"
 				list_categories
 			elsif input != "exit"
-				puts "Invalid number. Type list, categories, or exit."
+				puts "Invalid entry. Type a number, talks, categories, or exit."
 			end
 		end
 	end
 
-	def display_talk_info(doc)
+	def display_talk_info(talk_info)
 
+		puts " "
+		puts "------------------TED------------------------"
+		puts talk_info.author
+		puts talk_info.title
+		puts " "
+		puts "-----------------Details---------------------"
+		puts talk_info.description
+		puts " "
+		puts "Time #{talk_info.time} " 
+		puts talk_info.date
+		puts " "
+		puts "Total views: #{talk_info.views} "
 		puts "----------------------------------------------"
-		puts doc.search("div.player-hero__speaker").search("span.player-hero__speaker__content").text
-		puts doc.search("div.player-hero__title").search("span.player-hero__title__content").text
-		puts doc.search(".talk-subsection").search(".talk-top__details").search("p.talk-description").text
-		puts " "
-		puts "Time " + doc.search("div.player-hero__meta").search("span")[0].text
-		puts doc.search("div.player-hero__meta").search("span")[1].text
-		puts " "
-		puts doc.search("div.talk-sharing__count").search("span.talk-sharing__value").text.strip! + " total views"
-		puts "-----------------------------------------------"
 	end
 
 	def goodbye
