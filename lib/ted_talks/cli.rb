@@ -57,6 +57,7 @@ class TedTalks::CLI
 	  elsif input == "search"
 		puts "Enter your search term."
 		url_value = gets.strip.downcase
+		url_value.gsub! /\s+/, '+'
 		url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
 		list_talks(url)
 	  elsif input == "exit"
@@ -85,7 +86,7 @@ class TedTalks::CLI
 		elsif input == "categories"
 		    list_categories
 		elsif input != "exit"
-		    puts "Invalid entry. Type a number, talks, categories, or exit."
+		    puts "Invalid entry."
 		end
 	  end
       end
