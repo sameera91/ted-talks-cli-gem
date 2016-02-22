@@ -16,11 +16,11 @@ class TedTalks::Talk
 
 	doc = Nokogiri::HTML(open(url))
 
-	title = doc.search(".media__message").search("h4.h9").search("a")
-	author = doc.search(".media__message").search("h4.h12")
-	date = doc.search(".media__message").search(".meta").search(".meta__item").search("span.meta__val")
-	rating = doc.search(".media__message").search(".meta").search(".meta__row").search(".meta__val")
-	url = doc.search("h4.h9").css("a")
+	title = doc.css(".media__message").css("h4.h9").css("a")
+	author = doc.css(".media__message").css("h4.h12")
+	date = doc.css(".media__message").css(".meta").css(".meta__item").css("span.meta__val")
+	rating = doc.css(".media__message").css(".meta").css(".meta__row").css(".meta__val")
+	url = doc.css("h4.h9").css("a")
 
 	(0..9).each do |i|
 

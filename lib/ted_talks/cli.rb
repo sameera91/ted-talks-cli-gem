@@ -45,24 +45,25 @@ class TedTalks::CLI
 	  }
 
 	  if input.to_i == 1
-	        list_talks
+	     list_talks
 	  elsif input.to_i > 1 && input.to_i <= 7
-		url_value = categories_hash.key(input)
-		url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
-		list_talks(url)
+		 url_value = categories_hash.key(input)
+		 url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+		 list_talks(url)
 	  elsif categories_hash.key?(input)
-		url_value = input
-		url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
-		list_talks(url)
+		 url_value = input
+		 url = "http://www.ted.com/talks?topics%5B%5D=#{url_value}&sort=newest"
+		 list_talks(url)
 	  elsif input == "search"
-		puts "Enter your search term."
-		url_value = gets.strip.downcase
-		url_value.gsub! /\s+/, '+'
-		url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
-		list_talks(url)
+		 puts "Enter your search term."
+		 url_value = gets.strip.downcase
+		 url_value.gsub! /\s+/, '+'
+		 url = "http://www.ted.com/talks?q=#{url_value}&sort=newest"
+		 list_talks(url)
 	  elsif input == "exit"
-		exit
+		 exit
 	  end
+
       end
 
       def menu
