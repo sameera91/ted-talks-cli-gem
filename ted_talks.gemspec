@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = TedTalks::VERSION
   spec.authors       = ["sameera91"]
   spec.email         = ["sbachoti91@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = "This gem displays information on the latest TED talks."
+
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,10 +18,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.7"
+  spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "pry"
 
-  spec.add_dependency "nokogiri"
+  spec.add_development_dependency "nokogiri"
 end
